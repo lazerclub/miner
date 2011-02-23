@@ -1,0 +1,3 @@
+module Miner
+  # Your code goes here...
+end
