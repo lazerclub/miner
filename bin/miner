@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'eventmachine'
+require 'thin'
+require 'miner'
+
+EM.run{
+  Miner::Application.run! :port => 3000
+  Miner::Application.attempt_server_start
+}

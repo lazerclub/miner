@@ -16,6 +16,9 @@ Gem::Specification.new do |s|
   
   s.add_dependency "eventmachine", '~> 0.12.10'
   s.add_dependency "thin", '~> 1.2.7'
+  s.add_dependency 'sinatra', '~> 1.1.3'
+  s.add_dependency 'json', '~> 1.5.1'
+  s.add_dependency 'haml', '~> 3.0.25'
   
   s.add_development_dependency 'rspec', '~> 2.0.0'
 
