@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
-
+require 'rubygems' rescue LoadError
 require 'eventmachine'
 require 'thin'
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'miner'
 
-EM.run{
-  Miner::Application.run! :port => 3000
-  Miner::Application.attempt_server_start
-}
+command = ARGV.shift
+case command
+when /^stop$/i then Thin::Server.kill('~/miner', 0)
+else
+  puts "Miner #{Miner::VERSION} starting up on port 9898"
+  server = Miner::Server.new
+  server.start
+end

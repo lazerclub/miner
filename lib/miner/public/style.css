@@ -1,0 +1,47 @@
+body, html, input{
+	color: #0F0;
+	background: #333;
+	text-shadow: 0 0 2px rgba(0,255,0,1.0);
+	font-family:monospace;
+	font-size: 14px;
+}
+
+#messages {
+	list-style-type:none;
+	margin:0;
+	padding: 0;
+}
+
+#messages li {
+	margin: 0;
+}
+
+input {
+	width: 100%;
+	margin: 0;
+	padding: 2px 0 2px 30px;
+	background-repeat: no-repeat;
+	background-image: url('/cursor.png');
+	border:none;
+	outline: none;
+}
+
+ul.actions {
+	background: #000;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	margin: 0px;
+	list-style-type: none;
+	padding: 0 ;
+}
+
+ul.actions li {
+	display: inline-block;
+}
+
+ul.actions li a {
+	cursor: pointer;
+	display:block;
+	padding: 5px 10px;
+}

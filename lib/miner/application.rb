@@ -5,9 +5,15 @@ require 'miner/extensions/event_machine'
 
 module Miner
   class Application < Sinatra::Base
+    
+    set :root, File.dirname(__FILE__)
   
     class << self
     
+      def attempt_server_start
+        EM.popen3('java -jar minecraft_server.jar', Miner::ServerListener, StdErrRedirector, self)
+      end
+      
       def on_init(server)
         set :minecraft_server, server
       end
@@ -33,11 +39,11 @@ module Miner
       def mc_server; options.minecraft_server; end
       def stop_mc; mc_server.stop; end
       def messages; self.class.messages; end
-      def command(cmd); mc_server.send_data(cmd + "\n"); end
+      def command(cmd); handles?(cmd) ? dispatch(cmd) : mc_server.send_data(cmd + "\n"); end
     end
     
     get '/' do
-      haml :home
+      haml :index
     end
   
     get '/messages' do
@@ -76,46 +82,10 @@ module Miner
         "Starting"
       end
     end
-  
-  
-    template :home do%{
-  %html
-    %head
-      %title MinecraftManager
-      %script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js")
-      %script(src="/js/main.js")
-    %body
-      .messages(style="height: 300px; overflow-y:scroll; overflow-x:hidden ")
-        %ul#messages
-      %form#command
-        %input(name="cmd")
-  }end
 
     helpers do
       def mainjs
-        %{$(function(){
-        
-            var $cmd = $("input[name=cmd]");
-            var updateMessages = function(){
-              $.getJSON('/messages', function(data){
-                var $messages = $('#messages'), $div = $('.messages');
-                $messages.text('');
-                $(data).each(function(){
-                  $messages.append('<li>' + this + '</li>');
-                  $div.scrollTop(50000);
-                });
-              });
-            };
-            $("form#command").submit(function(){
-              var command = $cmd.val();
-              $.post('/command', {cmd:command}, function(){
-                $cmd.val('');
-              });
-              return false;
-            });
-            setInterval(updateMessages, 500);
-          
-          });
+        %{
         }.gsub(/^        /, '')
       end
     end
